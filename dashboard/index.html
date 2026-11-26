@@ -3,12 +3,58 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Token Radar: pre-token protocols ranked by implied value</title>
+<title>Token Launch Radar — radar-2</title>
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
-<a class="skip" href="#board">Skip to the board</a>
-<main id="board" tabindex="-1" aria-busy="true"></main>
+<header class="top">
+  <div>
+    <h1>Token Launch Radar</h1>
+    <p class="sub">Pre-token protocols, ranked by what a token would be worth if the record stayed as it is.</p>
+  </div>
+  <div class="model" id="modelBox">Model: implied = TVL &times; 0.35 &times; growth &times; age &times; chains</div>
+</header>
+
+<section class="controls" aria-label="Filters">
+  <label>Search <input id="q" type="search" placeholder="Protocol or category"></label>
+  <label>Chain
+    <select id="chain"><option value="">All chains</option></select>
+  </label>
+  <label>Sort
+    <select id="sort">
+      <option value="value">Implied value</option>
+      <option value="tvl">TVL</option>
+      <option value="growth">7-day growth</option>
+      <option value="age">Years with no token</option>
+    </select>
+  </label>
+  <label class="check"><input id="watchOnly" type="checkbox"> Watchlist only</label>
+  <span class="count" id="count"></span>
+</section>
+
+<section class="spot" id="spot" aria-label="Top three"></section>
+
+<main class="grid">
+  <section class="board">
+    <h2>Board <span id="asOf"></span></h2>
+    <table>
+      <thead><tr>
+        <th>#</th><th>Protocol</th><th>Category</th><th>Chains</th>
+        <th class="num">TVL</th><th class="num">7d</th><th class="num">Age</th><th class="num">Implied value</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p class="note">Live protocols — ones whose token already trades — are not ranked here. They are the contrast set, not the board. A protocol listed here records no token; that is not proof it has none.</p>
+  </section>
+
+  <aside class="detail" id="detail" aria-label="Protocol detail"></aside>
+</main>
+
+<footer>
+  <p><strong>How the value is built.</strong> Implied value = TVL &times; 0.35, times a growth factor from the 7-day TVL change (clamped &minus;50% to +100%, half weight), times an age factor (8% per year with no token recorded, capped at 5 years), times a chain factor (2% per distinct chain, capped at 10 chains). No name is hardcoded; the same formula recomputes every row on this page.</p>
+  <p><strong>Board:</strong> all 40 watchlist protocols, plus the 186 below-floor pre-token protocols with the highest implied value — 226 rows. Each row carries a 7-step farm plan with costs and times.</p>
+  <p>Snapshot 2026-11-14. This radar does not predict whether or when a token is issued.</p>
+</footer>
 <script src="../data.js"></script>
 <script src="app.js"></script>
 </body>
